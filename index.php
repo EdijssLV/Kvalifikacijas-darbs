@@ -1,3 +1,31 @@
+<?php
+$db = new SQLite3('/var/www/mysite/database/kabinets.db', SQLITE3_OPEN_READONLY);
+
+function generateCheckboxes($db, $table, $column, $inputName) {
+    $html = '';
+    try {
+        $query = "
+            SELECT DISTINCT $column FROM Kabinets WHERE $column IS NOT NULL
+            UNION
+            SELECT DISTINCT $column FROM nemainigs WHERE $column IS NOT NULL
+            ORDER BY $column ASC
+        ";
+        $results = $db->query($query);
+        
+        while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+            $value = htmlspecialchars($row[$column], ENT_QUOTES, 'UTF-8');
+            $html .= "<label><input type=\"checkbox\" name=\"$inputName\" value=\"$value\"> $value</label><br>\n";
+        }
+    } catch (Exception $e) {
+        $html .= "<p>Error generating checkboxes: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</p>";
+    }
+    return $html;
+}
+
+$categoriesHTML = generateCheckboxes($db, 'Kabinets', 'Category', 'stiprieDzerieni');
+
+$storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,23 +95,7 @@
                 </a>
             </div>
             <div id="kategorija" style="display: none;">
-                <label><input type="checkbox" name="stiprieDzerieni" value="Alus">Alus</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Balzāms">Balzāms</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Degvīns">Degvīns</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Enerģijas dzēriens">Enerģijas dzēriens</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Gāzēts limonāde">Gāzēts limonāde</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Liķieris">Liķieris</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Rums">Rums</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Sula">Sula</label>
-                <br>
-                <label><input type="checkbox" name="stiprieDzerieni" value="Viskijs">Viskijs</label>
+                <?php echo $categoriesHTML; ?>
             </div>
         </div>
         <div>
@@ -94,15 +106,7 @@
                 </a>
             </div>
             <div id="veikals" style="display: none;">
-                <label><input type="checkbox" name="veikals" value="AlkOutlet"> AlkOutlet</label>
-                <br>
-                <label><input type="checkbox" name="veikals" value="Depo"> Depo</label>
-                <br>
-                <label><input type="checkbox" name="veikals" value="Dzēriens bez uzcenojuma"> Dzēriens bez uzcenojuma</label>
-                <br>
-                <label><input type="checkbox" name="veikals" value="Mego"> Mego</label>
-                <br>
-                <label><input type="checkbox" name="veikals" value="Rimi"> Rimi</label>
+                <?php echo $storesHTML; ?>
             </div>
         </div>
     </div>
@@ -128,14 +132,13 @@
                                 die("Database connection failed: " . $db->lastErrorMsg());
                         }
 
-                        $query = "SELECT * FROM Kabinets UNION SELECT * FROM nemainigs ORDER BY Name;";
+                        $query = "SELECT * FROM Kabinets UNION SELECT *, NULL AS links FROM nemainigs ORDER BY Name;";
                         $results = $db->query($query);
 
-                        // Display the data
                         if ($results) {
                             while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
                                 echo "<tr>";
-                                echo "<td>" . $row['Name'] . "</td>";
+                                echo "<td><a href='" . $row['links'] . "' target='_blank'>" . $row['Name'] . "</a></td>";
                                 echo "<td>" . $row['Volume'] . " L</td>";
                                 echo "<td>" . $row['Price'] . " €</td>";
                                 echo "<td>" . $row['Store'] . "</td>";
