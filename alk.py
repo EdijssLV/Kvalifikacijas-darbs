@@ -57,14 +57,22 @@ def scrape_alkoutlet():
                     pattern = r"(?<!\w)(" + "|".join(re.escape(word) for word in stores.words_to_remove) + r")(?!\w)"
                     cleaned_title = re.sub(pattern, "", title)
                     title = re.sub(r"\s+", " ", cleaned_title).strip()
-
                 except Exception as e:
                     print(f"An error occurred: {e}")
+
+                try:
+                    kategorija = soup.find("span", class_="base").string.strip()
+                    if "Sula, nektārs, smūtiji" in kategorija:
+                        kategorija = "Sulas"
+                    if "Ūdens, minerālūdens" in kategorija:
+                        kategorija = "Ūdens"
+                except AttributeError:
+                    kategorija = None
 
                 c.execute("""
                     INSERT INTO Kabinets (Name, Volume, Price, Store, Category, PricePerLiter, links)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (title, float(tilpums) if tilpums else None, float(cena) if cena else None, "AlkOutlet", None, float(cenaL) if cenaL else None, link))
+                """, (title, float(tilpums) if tilpums else None, float(cena) if cena else None, "AlkOutlet", kategorija, float(cenaL) if cenaL else None, link))
 
             conn.commit()
 
@@ -341,9 +349,20 @@ if __name__ == "__main__":
     conn.commit()
 
     scrape_alkoutlet()
-    #scrape_rimi()
-    #scrape_SandW()
-    #scrape_LB()
+    scrape_rimi()
+    scrape_SandW()
+    scrape_LB()
+
+    c.execute("UPDATE Kabinets SET Category = 'Sula' WHERE Category = 'Sulas';")
+    c.execute("UPDATE Kabinets SET Category = 'Enerģijas dzērieni' WHERE Category = 'Enerģijas dzēriens';")
+    c.execute("UPDATE Kabinets SET Category = 'Balzāms' WHERE Category = 'Balzams';")
+    c.execute("UPDATE Kabinets SET Category = 'Limonādes' WHERE Category = 'Gāzēts limonāde';")
+    c.execute("UPDATE kabinets SET Category = 'Enerģijas dzērieni' WHERE Category = 'Enerģijas dzēriens';")
+    c.execute("UPDATE Kabinets SET Category = 'Konjaks' WHERE Category = 'Konjaki';")
+    c.execute("UPDATE Kabinets SET Category = 'Limonādes' WHERE Category = 'Limonāde';")
+    c.execute("UPDATE Kabinets SET Category = 'Uzlējumi' WHERE Category = 'Uzlējums';")
+    c.execute("UPDATE Kabinets SET Category = 'Vermuts / aperitīvs' WHERE Category = 'Vermuts';")
+    conn.commit()
 
     c.execute(f"SELECT COUNT(*) FROM kabinets")
     row_count = c.fetchone()[0]
