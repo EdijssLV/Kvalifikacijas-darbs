@@ -36,25 +36,17 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <!-- For IE 11, Chrome, Firefox, Safari, Opera -->
-        <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
-        <link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
-        <link rel="icon" href="/images/favicon-192x192.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/images/favicon-192x192.png" sizes="192x192" type="image/png">
 
-        <!-- Apple iOS: Disable automatic detection and formatting of possible phone numbers -->
-        <meta name="format-detection" content="telephone=no">
-
-        <!-- Apple iOS: Add to Home Screen -->
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-title" content="Kabinets">
-
-        <!-- Apple iOS: Touch Icons -->
-        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-
-        <!-- Google Android -->
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="theme-color" content="#c6995f">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Kabinets">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#c6995f">
 </head>
 <body background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
     <h1>Kabinets</h1>
