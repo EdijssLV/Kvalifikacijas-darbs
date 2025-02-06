@@ -4,6 +4,7 @@ from decimal import Decimal, ROUND_HALF_UP
 import re
 import sqlite3
 import stores
+import history
 
 def fetch_page_content(url):
     r = requests.get(url).text
@@ -312,7 +313,7 @@ def scrape_LB():
                 except TypeError:
                     cenaL = None
 
-                kategorija = soup.find("li", class_="item category72")
+                kategorija = soup.find("ul", class_="items")
                 try:
                     kategorija = kategorija.find("strong").string.strip()
                     if "Balzams" in kategorija:
@@ -340,19 +341,7 @@ def get_next_page_LB(soup):
         if next_page_li and next_page_li.find("a"):
             return next_page_li.find("a")["href"]
     return None
-
-if __name__ == "__main__":
-    conn = sqlite3.connect("/var/www/mysite/database/kabinets.db")
-    c = conn.cursor()
-
-    c.execute("DELETE FROM Kabinets")
-    conn.commit()
-
-    scrape_alkoutlet()
-    scrape_rimi()
-    scrape_SandW()
-    scrape_LB()
-
+def update_categories(c):
     c.execute("UPDATE Kabinets SET Category = 'Alus' WHERE Category = 'Bezalkoholiskais alus';")
     c.execute("UPDATE Kabinets SET Category = 'Balzāms' WHERE Category = 'Balzams';")
     c.execute("UPDATE Kabinets SET Category = 'Enerģijas dzērieni' WHERE Category = 'Enerģijas dzēriens';")
@@ -369,7 +358,7 @@ if __name__ == "__main__":
     c.execute("UPDATE Kabinets SET Category = 'Sīrupi' WHERE Category = 'Sīrupi / piedevas kokteiļiem';")
     c.execute("UPDATE Kabinets SET Category = 'Tēja' WHERE Category = 'Tējas dzērieni';")
     c.execute("UPDATE Kabinets SET Category = 'Uzlējumi' WHERE Category = 'Uzlējums';")
-    c.execute("UPDATE Kabinets SET Category = 'Vermuts' WHERE Category = 'Vermuts / aperitīvs';")  
+    c.execute("UPDATE Kabinets SET Category = 'Vermuts' WHERE Category = 'Vermuts / aperitīvs';")
     c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Augļu vīns';")
     c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Bezalkoholiskais dzirkstošais vīns';")
     c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Dzirkstošais vīns';")
@@ -378,6 +367,19 @@ if __name__ == "__main__":
     c.execute("UPDATE Kabinets SET Category = 'Karstvīns' WHERE Category = 'Karstvīns / karstie dzērieni';")
     c.execute("UPDATE kabinets SET Category = 'Enerģijas dzērieni' WHERE Category = 'Enerģijas dzēriens';")
     conn.commit()
+if __name__ == "__main__":
+    conn = sqlite3.connect("/var/www/mysite/database/kabinets.db")
+    c = conn.cursor()
+
+    c.execute("DELETE FROM Kabinets")
+    conn.commit()
+
+    scrape_alkoutlet()
+    scrape_rimi()
+    scrape_SandW()
+    scrape_LB()
+    # history.process_data_and_insert()
+    update_categories(c)
 
     c.execute(f"SELECT COUNT(*) FROM kabinets")
     row_count = c.fetchone()[0]
