@@ -150,41 +150,8 @@ def scrape_rimi():
                 except Exception as e:
                     print(f"An error occurred: {e}")
 
-                word_mapping = {
-                    "baltvins": "Baltvīns",
-                    "sarkanvins": "Sarkanvīns",
-                    "roza-vins": "Rozā vīns",
-                    "auglu-vins": "Augļu vīns",
-                    "stiprinats-vins": "Stiprināts vīns",
-                    "sampanietis": "Šampanietis",
-                    "dzirkstosais-vins": "Dzirkstošais vīns",
-                    "alus": "Alus",
-                    "sidrs": "Sidrs",
-                    "kokteili": "Kokteiļi",
-                    "degvini": "Degvīns",
-                    "tekila": "Tekila",
-                    "dzins": "Džins",
-                    "brendijs": "Brendijs",
-                    "viskijs": "Viskijs",
-                    "kojaks": "Konjaks",
-                    "rums": "Rums",
-                    "balzams": "Balzāms",
-                    "likieris": "Liķieris",
-                    "vermuts": "Vermuts / aperitīvs",
-                    "sporta-un-funkcionālie-dzērieni": "Sporta dzērieni",
-                    "udens": "Ūdens",
-                    "limonades": "Limonādes",
-                    "sulas-un-sulu-dzerieni": "Sulas",
-                    "svaigas-sulas-smutiji": "Sulas",
-                    "sirupi": "Sīrupi / piedevas kokteiļiem",
-                    "bezalkoholiskais-alus": "Bezalkoholiskais alus",
-                    "bezalkoholiskais-sidrs": "Bezalkoholiskais sidrs",
-                    "bezalkoholiskais-vini": "Bezalkoholiskais vīni",
-                    "dzirkstosie-bezalkoholiskais-dzerieni": "Bezalkoholiskie dzērieni",
-                    "energijas-dzerieni": "Enerģijas dzērieni",}
-
                 text = current_page
-                kategorija = next((value for word, value in word_mapping.items() if word in text), None)
+                kategorija = next((value for word, value in stores.word_mapping.items() if word in text), None)
 
                 c.execute("""
                     INSERT INTO Kabinets (Name, Volume, Price, Store, Category, PricePerLiter, links)
@@ -341,14 +308,13 @@ def get_next_page_LB(soup):
         if next_page_li and next_page_li.find("a"):
             return next_page_li.find("a")["href"]
     return None
+
 def update_categories(c):
-    c.execute("UPDATE Kabinets SET Category = 'Alus' WHERE Category = 'Bezalkoholiskais alus';")
     c.execute("UPDATE Kabinets SET Category = 'Balzāms' WHERE Category = 'Balzams';")
     c.execute("UPDATE Kabinets SET Category = 'Enerģijas dzērieni' WHERE Category = 'Enerģijas dzēriens';")
     c.execute("UPDATE Kabinets SET Category = 'Kokteiļi' WHERE Category = 'Bezalkoholiskie kokteiļi';")
     c.execute("UPDATE Kabinets SET Category = 'Konjaks' WHERE Category = 'Konjaki';")
     c.execute("UPDATE Kabinets SET Category = 'Limonāde' WHERE Category = 'Gāzēts limonāde';")
-    c.execute("UPDATE Kabinets SET Category = 'Limonādes' WHERE Category = 'Gāzēts limonāde';")
     c.execute("UPDATE Kabinets SET Category = 'Limonādes' WHERE Category = 'Limonāde';")
     c.execute("UPDATE Kabinets SET Category = 'Portvīns' WHERE Category = 'Portvīns / šerijs';")
     c.execute("UPDATE Kabinets SET Category = 'Sarkanvīns' WHERE Category = 'Bag-in-box sarkanvīns';")
@@ -365,7 +331,9 @@ def update_categories(c):
     c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Rozā vīns';")
     c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Stiprināts vīns';")
     c.execute("UPDATE Kabinets SET Category = 'Karstvīns' WHERE Category = 'Karstvīns / karstie dzērieni';")
-    c.execute("UPDATE kabinets SET Category = 'Enerģijas dzērieni' WHERE Category = 'Enerģijas dzēriens';")
+    c.execute("UPDATE kabinets SET Category = 'Vīns' WHERE Category = 'Bag-in-box vīns';")
+    c.execute("UPDATE kabinets SET Category = 'Kokteilis' WHERE Category = 'Bezalkoholiskais kokteilis';")
+    c.execute("UPDATE kabinets SET Category = 'Vīns' WHERE Category = 'Vīni un dzirkstošie';")
     conn.commit()
 if __name__ == "__main__":
     conn = sqlite3.connect("/var/www/mysite/database/kabinets.db")

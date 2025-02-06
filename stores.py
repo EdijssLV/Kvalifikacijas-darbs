@@ -30,7 +30,6 @@ rimi_urls = [
             "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/sulas-un-sulu-dzerieni/c/SH-5-8",
             "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/svaigas-sulas-un-smutiji/c/SH-5-11",
             "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/sirupi/c/SH-5-6",
-            "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/bezalkoholiskais-alus-sidri-un-vini/c/SH-5-1",
             "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/dzirkstosie-bezalkoholiskie-dzerieni/c/SH-5-2",
             "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/energijas-dzerieni/c/SH-5-3",
             "https://www.rimi.lv/e-veikals/lv/produkti/vina-darzs/baltvins/c/SH-1-2-1",
@@ -52,7 +51,11 @@ rimi_urls = [
             "https://www.rimi.lv/e-veikals/lv/produkti/alkoholiskie-dzerieni/rums/c/SH-1-9",
             "https://www.rimi.lv/e-veikals/lv/produkti/alkoholiskie-dzerieni/balzams/c/SH-1-11",
             "https://www.rimi.lv/e-veikals/lv/produkti/alkoholiskie-dzerieni/likieris/c/SH-1-1",
-            "https://www.rimi.lv/e-veikals/lv/produkti/alkoholiskie-dzerieni/vermuts/c/SH-1-4",]
+            "https://www.rimi.lv/e-veikals/lv/produkti/alkoholiskie-dzerieni/vermuts/c/SH-1-4",
+            "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/bezalkoholiskais-dzerieni/bezalkoholiskais-sidrs/c/SH-5-1-2",
+            "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/bezalkoholiskais-dzerieni/bezalkoholiskais-vins/c/SH-5-1-3",
+            "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/bezalkoholiskais-dzerieni/bezalkoholiskais-alus/c/SH-5-1-1",
+            "https://www.rimi.lv/e-veikals/lv/produkti/dzerieni/bezalkoholiskais-dzerieni/bezalkoholiskie-kokteili/c/SH-5-1-4",]
 SandWine_urls = [
             "https://www.spiritsandwine.lv/lv/absints?page=1",
             "https://www.spiritsandwine.lv/lv/alus-alk?page=1",
@@ -91,7 +94,8 @@ SandWine_urls = [
             "https://www.spiritsandwine.lv/lv/udens?page=1",
             "https://www.spiritsandwine.lv/lv/uzlejums?page=1",
             "https://www.spiritsandwine.lv/lv/vermuts?page=1",
-            "https://www.spiritsandwine.lv/lv/viskijs?page=1",]
+            "https://www.spiritsandwine.lv/lv/viskijs?page=1",
+            "https://www.spiritsandwine.lv/lv/grappa"]
 LB_urls = [
             "https://www.lbveikali.lv/lv/vins-un-dzirkstosie/sparkling-wine",
             "https://www.lbveikali.lv/lv/vins-un-dzirkstosie/champagne",
@@ -121,7 +125,8 @@ LB_urls = [
             "https://www.lbveikali.lv/lv/bezalkoholiskie-dzerieni-limonades/energijas-dzerieni",
             "https://www.lbveikali.lv/lv/bezalkoholiskie-dzerieni-limonades/bezalkoholiskie-dzirkstosie-vini",
             "https://www.lbveikali.lv/lv/bezalkoholiskie-dzerieni-limonades/bezalkoholiskais-alus",
-            "https://www.lbveikali.lv/lv/bezalkoholiskie-dzerieni-limonades/bezalkoholiskais-kokteilis",]
+            "https://www.lbveikali.lv/lv/bezalkoholiskie-dzerieni-limonades/bezalkoholiskais-kokteilis",
+            "https://www.lbveikali.lv/lv/stiprie-dzerieni/spiritiniai-gerimai",]
 words_to_remove = [
             'Alk.', 'Alko.', 'Alkoh.', 'Alkohol.', 'Alkoholi', 'Alkoholiskais', 
             'Alkoholiskias', 'Alkoholisks', 'Alus', 'Armanjaks', 'Arom.', 'B.', 
@@ -132,3 +137,35 @@ words_to_remove = [
             'Viegli', 'Viskijs', 'alk.', 'dz.', 'dzē.', 'dzēr.', 'dzēriens', 'k.', 
             'kok.', 'kokt.', 'kokteil.', 'kokteilis', 'minerālūd.', 'v.', 'vīns', 
             'Šampanietis', 'Ūdens']
+word_mapping = {
+            "baltvins": "Baltvīns",
+            "sarkanvins": "Sarkanvīns",
+            "roza-vins": "Rozā vīns",
+            "auglu-vins": "Augļu vīns",
+            "stiprinats-vins": "Stiprināts vīns",
+            "sampanietis": "Šampanietis",
+            "dzirkstosais-vins": "Dzirkstošais vīns",
+            "alus": "Alus",
+            "sidrs": "Sidrs",
+            "kokteili": "Kokteiļi",
+            "degvini": "Degvīns",
+            "tekila": "Tekila",
+            "dzins": "Džins",
+            "brendijs": "Brendijs",
+            "viskijs": "Viskijs",
+            "kojaks": "Konjaks",
+            "rums": "Rums",
+            "balzams": "Balzāms",
+            "likieris": "Liķieris",
+            "vermuts": "Vermuts / aperitīvs",
+            "sporta-un-funkcionālie-dzērieni": "Sporta dzērieni",
+            "udens": "Ūdens",
+            "limonades": "Limonādes",
+            "sulas-un-sulu-dzerieni": "Sulas",
+            "svaigas-sulas-smutiji": "Sulas",
+            "sirupi": "Sīrupi / piedevas kokteiļiem",
+            "bezalkoholiskais-alus": "Bezalkoholiskais alus",
+            "bezalkoholiskais-sidrs": "Bezalkoholiskais sidrs",
+            "bezalkoholiskais-vini": "Bezalkoholiskais vīni",
+            "dzirkstosie-bezalkoholiskais-dzerieni": "Bezalkoholiskie dzērieni",
+            "energijas-dzerieni": "Enerģijas dzērieni",}

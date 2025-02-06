@@ -85,10 +85,55 @@ try {
     <style>
         .container {
             display: flex;
-            align-items: center;
+            height: 100%;
+            width: 100%;
         }
-        .container > div {
-            margin-right: 10px; /* Optional: Add some space between the divs */
+
+        .chart-area {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #barChartContainer {
+            height: 50%;
+            width: 100%;
+        }
+        #lineChartContainer {
+            height: 50%;
+            width: 100%;
+        }
+
+        .button-area {
+            width: 50%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 80%; 
+            max-width: 400px; 
+        }
+
+        .btn-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-group button:hover {
+            background-color: #45a049;
         }
     </style>
     <script>
@@ -154,9 +199,13 @@ try {
 </head>
 <body background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
     <div class="container">
-        <div id="barChartContainer" style="height: 370px; width: 100%;"></div>
-        <div class="btn-group"><?php echo $buttonHTML; ?></div>
+        <div class="chart-area">
+            <div id="barChartContainer"></div>
+            <div id="lineChartContainer"></div>
+        </div>
+        <div class="button-area">
+            <div class="btn-group"><?php echo $buttonHTML; ?></div>
+        </div>
     </div>
-    <div id="lineChartContainer" style="height: 370px; width: 100%; margin-top: 30px;"></div>
 </body>
 </html>
