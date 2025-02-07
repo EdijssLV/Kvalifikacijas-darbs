@@ -346,8 +346,8 @@ if __name__ == "__main__":
     scrape_rimi()
     scrape_SandW()
     scrape_LB()
-    # history.process_data_and_insert()
     update_categories(c)
+    #history.process_data_and_insert()
 
     c.execute(f"SELECT COUNT(*) FROM kabinets")
     row_count = c.fetchone()[0]

@@ -27,7 +27,7 @@ $categoriesHTML = generateCheckboxes($db, 'Kabinets', 'Category', 'stiprieDzerie
 $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

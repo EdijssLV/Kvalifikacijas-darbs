@@ -75,67 +75,13 @@ try {
 }
 ?>
 <!DOCTYPE HTML>
-<html>
+<html lang="lv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kabinets</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <style>
-        .container {
-            display: flex;
-            height: 100%;
-            width: 100%;
-        }
-
-        .chart-area {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #barChartContainer {
-            height: 50%;
-            width: 100%;
-        }
-        #lineChartContainer {
-            height: 50%;
-            width: 100%;
-        }
-
-        .button-area {
-            width: 50%;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 80%; 
-            max-width: 400px; 
-        }
-
-        .btn-group button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-group button:hover {
-            background-color: #45a049;
-        }
-    </style>
     <script>
         function loadChart(category) {
             window.location.href = "?category=" + category;

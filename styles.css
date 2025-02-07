@@ -32,8 +32,8 @@ th {
     display: none;
 }
 button {
-        /* background-color: transparent; */
-        /* border: none; */
+    /* background-color: transparent; */
+    /* border: none; */
     cursor: pointer;
 }
 .top-right-button {
@@ -76,25 +76,52 @@ img{
     height: 700px;
     padding-bottom: 20px;
 }
-.btn-group .button {
-    background-color: #04AA6D; /* Green */
-    border: 1px solid green;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    cursor: pointer;
-    width: 150px;
-}
-.btn-group{
+.container {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: row;
+    height: 100%; /* Very important: Full viewport height for the container */
+    width: 100%;
 }
-.btn-group .button:hover {
-    background-color: #3e8e41;
+.chart-area {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+#barChartContainer, #lineChartContainer {
+    height: 50%;
+    width: 100%;
+}
+/* Button Area */
+.button-area {
+    width: 50%;
+    display: flex;
+    flex-direction: row; /* Buttons in a row */
+    flex-wrap: wrap; /* Allow buttons to wrap */
+    justify-content: center; /* Align buttons to top-left */
+    padding: 20px;
+    height: 100%;
+    gap: 10px; /* Space between buttons */
+}
+
+.btn-group {
+    display: contents; /* Buttons are direct children of .button-area */
+}
+.btn-group button {
+    padding: 15px 32px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+    width: 150px;
+    text-align: center; /* Center text within the button */
+
+}
+.btn-group button:hover {
+    background-color: #45a049;
 }
 @media screen and (max-width: 770px){
     .table-container{
