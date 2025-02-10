@@ -28,26 +28,7 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
 ?>
 <!DOCTYPE html>
 <html lang="lv">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kabinets</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/images/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="icon" href="/images/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/images/favicon-192x192.png" sizes="192x192" type="image/png">
-
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Kabinets">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#c6995f">
-</head>
+<?php include 'head.php'; ?>
 <body background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
     <h1>Kabinets</h1>
 
@@ -124,7 +105,7 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
                                 die("Database connection failed: " . $db->lastErrorMsg());
                         }
 
-                        $query = "SELECT * FROM Kabinets UNION SELECT *, NULL AS links FROM nemainigs ORDER BY Name;";
+                        $query = "SELECT * FROM Kabinets UNION SELECT * NULL AS links FROM nemainigs ORDER BY Name;";
                         $results = $db->query($query);
 
                         if ($results) {

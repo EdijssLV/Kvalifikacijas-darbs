@@ -58,7 +58,8 @@ try {
 
             while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
                 $value = htmlspecialchars($row[$column], ENT_QUOTES, 'UTF-8');
-                $html .= "<button onclick=loadChart('$value') class='button'>$value</button>\n";
+                // Encode the value using JavaScript's encodeURIComponent()
+                $html .= "<button onclick=\"loadChart('".urlencode($value)."')\" class='button'>$value</button>\n";
             }
         } catch (Exception $e) {
             $html .= "<p>Error generating buttons: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</p>";
@@ -76,15 +77,23 @@ try {
 ?>
 <!DOCTYPE HTML>
 <html lang="lv">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kabinets</title>
-    <link rel="stylesheet" href="styles.css">
+<?php include 'head.php'; ?>
+<body background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
+    <div class="container">
+        <div class="chart-area">
+            <div id="barChartContainer"></div>
+            <div id="lineChartContainer"></div>
+        </div>
+        <div class="button-area">
+            <div class="btn-group"><?php echo $buttonHTML; ?></div>
+        </div>
+    </div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script>
         function loadChart(category) {
-            window.location.href = "?category=" + category;
+            // Decode the category name using decodeURIComponent()
+            const decodedCategory = decodeURIComponent(category);
+            window.location.href = "?category=" + decodedCategory;
         }
 
         window.onload = function () {
@@ -142,16 +151,5 @@ try {
             lineChart.render();
         };
     </script>
-</head>
-<body background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
-    <div class="container">
-        <div class="chart-area">
-            <div id="barChartContainer"></div>
-            <div id="lineChartContainer"></div>
-        </div>
-        <div class="button-area">
-            <div class="btn-group"><?php echo $buttonHTML; ?></div>
-        </div>
-    </div>
 </body>
 </html>

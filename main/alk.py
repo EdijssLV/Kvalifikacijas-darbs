@@ -331,9 +331,10 @@ def update_categories(c):
     c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Rozā vīns';")
     c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Stiprināts vīns';")
     c.execute("UPDATE Kabinets SET Category = 'Karstvīns' WHERE Category = 'Karstvīns / karstie dzērieni';")
-    c.execute("UPDATE kabinets SET Category = 'Vīns' WHERE Category = 'Bag-in-box vīns';")
-    c.execute("UPDATE kabinets SET Category = 'Kokteilis' WHERE Category = 'Bezalkoholiskais kokteilis';")
-    c.execute("UPDATE kabinets SET Category = 'Vīns' WHERE Category = 'Vīni un dzirkstošie';")
+    c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Bag-in-box vīns';")
+    c.execute("UPDATE Kabinets SET Category = 'Kokteilis' WHERE Category = 'Bezalkoholiskais kokteilis';")
+    c.execute("UPDATE Kabinets SET Category = 'Vīns' WHERE Category = 'Vīni un dzirkstošie';")
+    c.execute("UPDATE Kabinets SET Category = 'Kokteiļi' WHERE Category = 'Kokteilis';")
     conn.commit()
 if __name__ == "__main__":
     conn = sqlite3.connect("/var/www/mysite/database/kabinets.db")
