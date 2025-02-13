@@ -8,8 +8,41 @@ try {
 
     $dataPoints = [];
     $historyData = [];
+    $categories = [];
 
-    $category = $_GET['category'] ?? '';
+    // Fetch all categories for checkboxes
+    $categoryQuery = "SELECT DISTINCT category FROM categories ORDER BY category ASC";
+    $categoryResults = $db->query($categoryQuery);
+    while ($row = $categoryResults->fetchArray(SQLITE3_ASSOC)) {
+        $categories[] = $row['category'];
+    }
+
+    // Get selected categories from URL (default: empty)
+    $selectedCategories = isset($_GET['categories']) ? explode(',', urldecode($_GET['categories'])) : [];
+
+    // Fetch historical price data for line chart
+    if (!empty($selectedCategories)) {
+        foreach ($selectedCategories as $category) {
+            $query = "SELECT avg_price, timestamp FROM categories WHERE category = :category ORDER BY timestamp ASC";
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(':category', $category, SQLITE3_TEXT);
+            $results = $stmt->execute();
+            
+            $points = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $points[] = [
+                    "x" => strtotime($row['timestamp']) * 1000,
+                    "y" => (float)$row['avg_price']
+                ];
+            }
+            if (!empty($points)) {
+                $historyData[$category] = $points;
+            }
+        }
+    }
+
+    // Fetch store prices for bar chart
+    $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
 
     if ($category) {
         $query = "
@@ -31,20 +64,7 @@ try {
         }
     }
 
-    $query = "SELECT category, avg_price, timestamp FROM categories ORDER BY timestamp ASC";
-    $results = $db->query($query);
-
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
-        $cat = $row['category'];
-        $avg_price = round((float)$row['avg_price'], 2);
-        $timestamp = strtotime($row['timestamp']) * 1000;
-
-        if (!isset($historyData[$cat])) {
-            $historyData[$cat] = [];
-        }
-        $historyData[$cat][] = ["x" => $timestamp, "y" => $avg_price];
-    }
-
+    // Generate category buttons for the bar chart
     function button($db, $column) {
         $html = '';
         try {
@@ -58,8 +78,8 @@ try {
 
             while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
                 $value = htmlspecialchars($row[$column], ENT_QUOTES, 'UTF-8');
-                // Encode the value using JavaScript's encodeURIComponent()
-                $html .= "<button onclick=\"loadChart('".urlencode($value)."')\" class='button'>$value</button>\n";
+                $encodedValue = urlencode($row[$column]); // Properly encode it for URLs
+                $html .= "<button onclick=\"loadBarChart('$encodedValue')\" class='button'>$value</button>\n";
             }
         } catch (Exception $e) {
             $html .= "<p>Error generating buttons: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</p>";
@@ -73,6 +93,7 @@ try {
     echo "Error: " . $e->getMessage();
     $dataPoints = [];
     $historyData = [];
+    $categories = [];
 }
 ?>
 <!DOCTYPE HTML>
@@ -84,19 +105,41 @@ try {
             <div id="barChartContainer"></div>
             <div id="lineChartContainer"></div>
         </div>
-        <div class="button-area">
-            <div class="btn-group"><?php echo $buttonHTML; ?></div>
+        <div class="action-area">
+            <div class="button-area">
+                <div class="btn-group"><?php echo $buttonHTML; ?></div>
+            </div>
+            <div class="checkbox-area">
+                <?php foreach ($categories as $category): ?>
+                    <label>
+                        <input type="checkbox" name="category" value="<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>" 
+                        <?php echo in_array($category, $selectedCategories) ? 'checked' : ''; ?>
+                        onchange="updateLineChart()">
+                        <?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>
+                    </label><br>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
+
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script>
-        function loadChart(category) {
-            // Decode the category name using decodeURIComponent()
-            const decodedCategory = decodeURIComponent(category);
-            window.location.href = "?category=" + decodedCategory;
+        function loadBarChart(category) {
+            window.location.href = "?category=" + category;
+        }
+
+        function updateLineChart() {
+            var selectedCategories = [];
+            document.querySelectorAll('input[name="category"]:checked').forEach((checkbox) => {
+                selectedCategories.push(encodeURIComponent(checkbox.value));
+            });
+
+            var queryString = selectedCategories.length > 0 ? "?categories=" + selectedCategories.join(',') : "";
+            window.location.href = queryString;
         }
 
         window.onload = function () {
+            // Bar Chart
             var storeData = <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>;
             var barChart = new CanvasJS.Chart("barChartContainer", {
                 animationEnabled: true,
@@ -117,15 +160,15 @@ try {
             });
             barChart.render();
 
+            // Line Chart
             var historyData = <?php echo json_encode($historyData, JSON_NUMERIC_CHECK); ?>;
             var lineSeries = [];
 
             for (var category in historyData) {
                 historyData[category].sort((a, b) => a.x - b.x);
-
                 lineSeries.push({
                     type: "line",
-                    showInLegend: false,
+                    showInLegend: true,
                     name: category,
                     xValueType: "dateTime",
                     dataPoints: historyData[category]
@@ -138,14 +181,7 @@ try {
                 title: { text: "Vidējā cena par litru pēc kategorijas laika gaitā" },
                 axisX: { title: "Laiks", valueFormatString: "YYYY-MM-DD", labelAngle: -90 },
                 axisY: { title: "Vidējā cena (€)", minimum: 0 },
-                toolTip: { shared: true, contentFormatter: function(e) {
-                    var content = "<strong>" + new Date(e.entries[0].dataPoint.x).toISOString().split("T")[0] + "</strong><br/>";
-                    e.entries.sort((a, b) => b.dataPoint.y - a.dataPoint.y);
-                    e.entries.forEach(entry => {
-                        content += "<span style='color:" + entry.dataSeries.color + "'>● </span>" + entry.dataSeries.name + ": " + entry.dataPoint.y + " €<br/>";
-                    });
-                    return content;
-                }},
+                toolTip: { shared: true },
                 data: lineSeries
             });
             lineChart.render();

@@ -82,25 +82,46 @@ img{
     height: 100%;
     width: 100%;
 }
-.chart-area {
+.action-area{
     width: 50%;
     display: flex;
     flex-direction: column;
 }
-
-#barChartContainer, #lineChartContainer {
-    height: 34vh;
-    width: 100%;
-}
-/* Button Area */
-.button-area {
-    width: 50%;
+.checkbox-area{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     padding: 20px;
+    gap: 3px;
+}
+.checkbox-area label{
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    width: 150px;
+    text-align: center;
+}
+.chart-area {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#barChartContainer, #lineChartContainer {
     height: 100%;
+    width: 100%;
+}
+/* Button Area */
+.button-area {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
     gap: 10px;
 }
 

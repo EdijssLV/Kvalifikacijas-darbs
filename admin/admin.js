@@ -6,4 +6,4 @@ function showDiv(divId) {
       document.getElementById('table1').style.display = 'none';
       document.getElementById('table2').style.display = 'block';
     }
-  }
+}
