@@ -38,7 +38,7 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
         <input type="text" id="filterInput" onkeyup="filterFirstColumn()" placeholder="Search for names.." style="width:100%">
         <div>
             <div>
-                <a href="#" onclick="toggleFilters('tilpums')">
+                <a href="#" onclick="toggleFilters('tilpums', 'tilpumsArrow')">
                     <span class="material-icons md-48" id="tilpumsArrow">expand_less</span>
                     <span>Tilpums</span>
                 </a>
@@ -62,7 +62,7 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
         </div>
         <div>
             <div>
-                <a href="#" onclick="kategorijas()">
+                <a href="#" onclick="toggleFilters('kategorija', 'kategorijaArrow')">
                     <span class="material-icons md-48" id="kategorijaArrow">expand_less</span>
                     <span>Kategorija</span>
                 </a>
@@ -73,7 +73,7 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
         </div>
         <div>
             <div>
-                <a href="#" onclick="veikals()">
+                <a href="#" onclick="toggleFilters('veikals', 'veikalsArrow')">
                     <span class="material-icons md-48" id="veikalsArrow">expand_less</span>
                     <span>Veikals</span>
                 </a>
@@ -81,6 +81,8 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
             <div id="veikals" style="display: none;">
                 <?php echo $storesHTML; ?>
             </div>
+            <p style="font-size: 12px;">* - Veikali kuriem netiek atjaunoti dati</p>
+            <button onclick="window.open('data.php', '_blank')">Statistiku lapa</button>
         </div>
     </div>
 
@@ -105,7 +107,7 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
                                 die("Database connection failed: " . $db->lastErrorMsg());
                         }
 
-                        $query = "SELECT * FROM Kabinets UNION SELECT * NULL AS links FROM nemainigs ORDER BY Name;";
+                        $query = "SELECT * FROM Kabinets UNION SELECT *, NULL AS links FROM nemainigs ORDER BY Name;";
                         $results = $db->query($query);
 
                         if ($results) {

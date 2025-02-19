@@ -76,46 +76,24 @@ img{
     height: 700px;
     padding-bottom: 20px;
 }
-.container {
-    display: flex;
-    flex-direction: row;
+.container, .area {
     height: 100%;
     width: 100%;
 }
-.action-area{
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-}
-.checkbox-area{
+.area{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 20px;
-    gap: 3px;
 }
-.checkbox-area label{
-    padding: 10px 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    width: 150px;
-    text-align: center;
-}
-.chart-area {
+.action-area, .chart-area{
     width: 50%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    margin: 3px;
 }
-
 #barChartContainer, #lineChartContainer {
     height: 100%;
     width: 100%;
 }
-/* Button Area */
 .button-area {
     display: flex;
     flex-direction: row;
@@ -134,7 +112,7 @@ img{
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color: #51cda0;
     color: white;
     transition: background-color 0.3s ease;
     width: 150px;
@@ -143,6 +121,23 @@ img{
 }
 .btn-group button:hover {
     background-color: #45a049;
+}
+.checkbox-area{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 3px;
+}
+.checkbox-area label{
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #df7970;
+    color: white;
+    width: 150px;
+    text-align: center;
 }
 @media screen and (max-width: 770px){
     .table-container{

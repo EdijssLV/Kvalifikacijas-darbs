@@ -63,7 +63,6 @@ try {
             ];
         }
     }
-
     // Generate category buttons for the bar chart
     function button($db, $column) {
         $html = '';
@@ -101,15 +100,19 @@ try {
 <?php include 'head.php'; ?>
 <body background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
     <div class="container">
-        <div class="chart-area">
-            <div id="barChartContainer"></div>
-            <div id="lineChartContainer"></div>
-        </div>
-        <div class="action-area">
-            <div class="button-area">
+        <div class="area">
+            <div class="chart-area">
+                <div id="barChartContainer"></div>
+            </div>
+            <div class="button-area action-area">
                 <div class="btn-group"><?php echo $buttonHTML; ?></div>
             </div>
-            <div class="checkbox-area">
+        </div>
+        <div class="area">
+            <div class="chart-area">
+                <div id="lineChartContainer"></div>
+            </div>
+            <div class="checkbox-area action-area">
                 <?php foreach ($categories as $category): ?>
                     <label>
                         <input type="checkbox" name="category" value="<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>" 
@@ -144,37 +147,19 @@ try {
             var barChart = new CanvasJS.Chart("barChartContainer", {
                 animationEnabled: true,
                 theme: "light2",
-                title: {
-                    text: "Vidējā cena par litru veikalos" + (new URLSearchParams(window.location.search).get("category") ? " - " + new URLSearchParams(window.location.search).get("category") : "")
-                },
-                axisY: {
-                    title: "Vidējā cena (€)",
-                    minimum: 0,
-                    suffix: " €"
-                },
-                data: [{
-                    type: "column",
-                    dataPoints: storeData,
-                    yValueFormatString: "#.## €",
-                }]
+                title: { text: "Vidējā cena par litru veikalos" },
+                axisY: { title: "Vidējā cena (€)", minimum: 0, suffix: " €" },
+                data: [{ type: "column", dataPoints: storeData, yValueFormatString: "#.## €" }]
             });
             barChart.render();
 
             // Line Chart
             var historyData = <?php echo json_encode($historyData, JSON_NUMERIC_CHECK); ?>;
             var lineSeries = [];
-
             for (var category in historyData) {
                 historyData[category].sort((a, b) => a.x - b.x);
-                lineSeries.push({
-                    type: "line",
-                    showInLegend: true,
-                    name: category,
-                    xValueType: "dateTime",
-                    dataPoints: historyData[category]
-                });
+                lineSeries.push({ type: "line", showInLegend: true, name: category, xValueType: "dateTime", dataPoints: historyData[category] });
             }
-
             var lineChart = new CanvasJS.Chart("lineChartContainer", {
                 animationEnabled: true,
                 theme: "light2",

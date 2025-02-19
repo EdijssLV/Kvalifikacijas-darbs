@@ -9,101 +9,20 @@ function toggleDiv() {
     }
 }
 
-//mainīt datu secības augoši vai dilstoši
-let ascending = [];
-function sortColumn(columnIndex, descending = false) {
-    let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.querySelector("table");
-    switching = true;
-    while (switching) {
-        switching = false;
-        rows = table.rows;
-        for (i = 1; i < (rows.length - 1); i++) {
-            shouldSwitch = false;
-            x = rows[i].getElementsByTagName("td")[columnIndex];
-            y = rows[i + 1].getElementsByTagName("td")[columnIndex];
-            let xValue = x.textContent || x.innerText;
-            let yValue = y.textContent || y.innerText;
-            if (!descending) {
-                if (xValue.toLowerCase() > yValue.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            } else {
-                if (xValue.toLowerCase() < yValue.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-        }
-        if (shouldSwitch) {
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-        }
-    }
-    ascending[columnIndex] = !descending;
-}
-
-//Filtrēt kolonas
-function toggleFilters(id) {
+function toggleFilters(id, arrowId) {
     var filterDiv = document.getElementById(id);
-    var veikalsArrow = document.getElementById("tilpumsArrow");
+    var arrow = document.getElementById(arrowId);
+
     if (filterDiv.style.display === "none") {
         filterDiv.style.display = "block";
-        veikalsArrow.style.transform = "rotate(180deg)";
-        veikalsArrow.style.transition = "all 0.5s";
+        arrow.style.transform = "rotate(180deg)";
     } else {
         filterDiv.style.display = "none";
-        veikalsArrow.style.transform = "rotate(0deg)";
-        veikalsArrow.style.transition = "all 0.5s";
+        arrow.style.transform = "rotate(0deg)";
     }
+    arrow.style.transition = "all 0.5s";
 }
 
-function kategorijas() {
-    var checkboxContainer = document.getElementById("kategorija");
-    var veikalsArrow = document.getElementById("kategorijaArrow");
-    if (checkboxContainer.style.display === "none") {
-        checkboxContainer.style.display = "block";
-        veikalsArrow.style.transform = "rotate(180deg)";
-        veikalsArrow.style.transition = "all 0.5s";
-    } else {
-        checkboxContainer.style.display = "none";
-        veikalsArrow.style.transform = "rotate(0deg)";
-        veikalsArrow.style.transition = "all 0.5s";
-    }
-}
-
-function veikals() {
-    var checkboxContainer = document.getElementById("veikals");
-    var veikalsArrow = document.getElementById("veikalsArrow");
-    if (checkboxContainer.style.display === "none") {
-        checkboxContainer.style.display = "block";
-        veikalsArrow.style.transform = "rotate(180deg)";
-        veikalsArrow.style.transition = "all 0.5s";
-    } else {
-        checkboxContainer.style.display = "none";
-        veikalsArrow.style.transform = "rotate(0deg)";
-        veikalsArrow.style.transition = "all 0.5s";
-    }
-}
-
-function filterFirstColumn() {
-    var input = document.getElementById("filterInput");
-    var filter = input.value.toLowerCase();
-    var table = document.getElementById("myTable");
-    var rows = table.getElementsByTagName("tr");
-    for (var i = 0; i < rows.length; i++) {
-        var cell = rows[i].getElementsByTagName("td")[0];
-        if (cell) {
-            var textValue = cell.textContent || cell.innerText;
-            if (textValue.toLowerCase().indexOf(filter) > -1) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
-    }
-}
 
 function filterTable() {
     var tilpumsCheckboxes = document.getElementsByName('tilpums');
@@ -156,4 +75,31 @@ document.querySelectorAll('input[name="stiprieDzerieni"]').forEach(function(chec
 });
 document.querySelectorAll('input[name="veikals"]').forEach(function(checkbox) {
     checkbox.addEventListener('change', filterTable);
+});
+
+document.getElementById("filterForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get filter values
+    var minVolume = document.getElementById("minVolume").value;
+    var maxVolume = document.getElementById("maxVolume").value;
+    var minPricePerL = document.getElementById("minPricePerL").value;
+    var maxPricePerL = document.getElementById("maxPricePerL").value;
+
+    // Build URL query string
+    var queryParams = new URLSearchParams(window.location.search);
+    if (minVolume) queryParams.set("minVolume", minVolume);
+    else queryParams.delete("minVolume");
+    
+    if (maxVolume) queryParams.set("maxVolume", maxVolume);
+    else queryParams.delete("maxVolume");
+
+    if (minPricePerL) queryParams.set("minPricePerL", minPricePerL);
+    else queryParams.delete("minPricePerL");
+
+    if (maxPricePerL) queryParams.set("maxPricePerL", maxPricePerL);
+    else queryParams.delete("maxPricePerL");
+
+    // Reload page with filters applied
+    window.location.search = queryParams.toString();
 });

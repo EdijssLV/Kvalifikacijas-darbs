@@ -114,7 +114,7 @@ def scrape_rimi():
 
                 tilpums_raw = product.find("p", class_="card__name")
                 if tilpums_raw:
-                    tilpums_match = re.search(r"(\d+(?:\,\d*)?)\s*(ml|l)", tilpums_raw.string.replace(" ", ""), re.IGNORECASE)
+                    tilpums_match = re.search(r"(\d+(?:[,.]\d*)?)\s*(ml|l)(?!\w)", tilpums_raw.string.replace(" ", ""), re.IGNORECASE)
                     if tilpums_match:
                         quantity = Decimal(tilpums_match.group(1).replace(",", "."))
                         unit = tilpums_match.group(2).lower()
