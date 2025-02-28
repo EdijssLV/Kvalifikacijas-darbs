@@ -37,12 +37,46 @@ input{
     cursor: pointer;
     font-size: 15px;
 }
-.container{
+h1{
+    text-align: center;
+    font-size: 40px;
+}
+#style{
     display: flex;
     width: 100%;
 }
+.table-container {
+    margin: 0 10px;
+    max-height: 800px;
+    overflow-y: auto;
+    width: 85%;
+    border: 2px solid black;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+th, td {
+    /* padding: 2px; */
+    text-align: center;
+    border-bottom: 1px solid #bdbdbd;
+    border-right: 1px solid #bdbdbd;
+}
+th {
+    background-color: #bdbdbd;
+    padding: 15px 5px;
+}
+.hidden-column{
+    display: none;
+}
+button {
+    /* background-color: transparent; */
+    /* border: none; */
+    cursor: pointer;
+}
 .sidebar{
-    width: 25%;
+    width: 15%;
     height: 100vh;
     padding: 20px;
     backdrop-filter: blur(3px);
@@ -50,41 +84,35 @@ input{
     display: flex;
     flex-direction: column;
 }
+a{
+    text-decoration: none;
+    color: black;
+}
 .sidebar a{
     padding: 10px;
     margin: 5px 0;
     border: 1px solid #363636;
     border-radius: 5px;
     text-align: center;
-    text-decoration: none;
-    color: black;
     background-color: #f2f2f2;
 }
 .sidebar a:hover{
     background-color: #c5c5c5;
     transition: background-color 0.3s ease;
 }
-.table{
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
+tr:nth-child(even) {
+  background-color: #dddddd;
 }
-table{
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-#table1 {
-    height: 90vh;
-    overflow-y: scroll;
-    padding-top: 5%;
-}
-table, th, td {
-    background-color: white;
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 10px 5px;
-    text-align: center;
+@media screen and (max-width: 770px){
+    .table-container{
+        width:100%;
+        margin: 0;
+    }
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    table{
+        font-size: 14px;
+    }
 }
