@@ -36,16 +36,18 @@ button {
     /* border: none; */
     cursor: pointer;
 }
+.top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
 .top-right-button {
-    position: fixed;
-    max-width: 60%;
-    top: 20px;
-    right: 20px;
-    background-color: #f2f2f2;
-    padding: 10px 15px;
-    font-size: 16px;
+    background-color: white;
+    border: 1px solid #111;
     cursor: pointer;
-    z-index: 9;
+    margin-left: 5px;
 }
 .hidden-div{
     display: none;
