@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <?php include 'head.php'; ?>
 <body class="formLapa" background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
-    <form method="post">
+    <form method="post" class="form">
         <h1>Reģistrēties</h1>
         Vārds: <input type="text" name="name" required><br>
         E-pasts: <input type="email" name="email" required><br>
