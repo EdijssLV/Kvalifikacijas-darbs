@@ -23,6 +23,24 @@ function toggleFilters(id, arrowId) {
     arrow.style.transition = "all 0.5s";
 }
 
+function filterFirstColumn() {
+    const input = document.getElementById("filterInput");
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById("myTable");
+    const rows = table.getElementsByTagName("tr");
+    
+    for (let i = 1; i < rows.length; i++) {
+        const firstCell = rows[i].getElementsByTagName("td")[0]; // First column
+        if (firstCell) {
+            const textValue = firstCell.textContent || firstCell.innerText;
+            if (textValue.toUpperCase().indexOf(filter) > -1) {
+                rows[i].style.display = ""; // Show row
+            } else {
+                rows[i].style.display = "none"; // Hide row
+            }
+        }
+    }
+}
 
 function filterTable() {
     var tilpumsCheckboxes = document.getElementsByName('tilpums');

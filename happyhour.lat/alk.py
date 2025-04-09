@@ -348,7 +348,8 @@ if __name__ == "__main__":
     scrape_SandW()
     scrape_LB()
     update_categories(c)
-    #history.process_data_and_insert()
+    
+    history.update_categories()
 
     c.execute(f"SELECT COUNT(*) FROM kabinets")
     row_count = c.fetchone()[0]
@@ -356,3 +357,7 @@ if __name__ == "__main__":
     print(f"Scraped {row_count} products")
 
     conn.close()
+
+    import subprocess
+    subprocess.run(["php", "/var/www/user.happyhour.lat/log_prices.php"])
+    subprocess.run(["php", "/var/www/user.happyhour.lat/finalize_prices.php"])

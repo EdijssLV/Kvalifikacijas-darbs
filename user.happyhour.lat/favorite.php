@@ -11,27 +11,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["drink_key"])) {
     $user_id = $_SESSION["user_id"];
     $drink_key = $_POST["drink_key"];
 
-    // Check if the drink is already favorited
-    $checkQuery = $db->prepare("SELECT COUNT(*) as count FROM favorites WHERE user_id = :user_id AND drink_key = :drink_key");
-    $checkQuery->bindValue(":user_id", $user_id, SQLITE3_INTEGER);
-    $checkQuery->bindValue(":drink_key", $drink_key, SQLITE3_TEXT);
-    $result = $checkQuery->execute()->fetchArray(SQLITE3_ASSOC);
+    // Check if drink is already liked
+    $check = $db->prepare("SELECT COUNT(*) as count FROM favorites WHERE user_id = :uid AND drink_key = :dkey");
+    $check->bindValue(":uid", $user_id, SQLITE3_INTEGER);
+    $check->bindValue(":dkey", $drink_key, SQLITE3_TEXT);
+    $res = $check->execute()->fetchArray(SQLITE3_ASSOC);
 
-    if ($result['count'] > 0) {
-        // If already favorited, remove from favorites
-        $deleteQuery = $db->prepare("DELETE FROM favorites WHERE user_id = :user_id AND drink_key = :drink_key");
-        $deleteQuery->bindValue(":user_id", $user_id, SQLITE3_INTEGER);
-        $deleteQuery->bindValue(":drink_key", $drink_key, SQLITE3_TEXT);
-        $deleteQuery->execute();
+    if ($res['count'] > 0) {
+        // Already liked → remove
+        $del = $db->prepare("DELETE FROM favorites WHERE user_id = :uid AND drink_key = :dkey");
+        $del->bindValue(":uid", $user_id, SQLITE3_INTEGER);
+        $del->bindValue(":dkey", $drink_key, SQLITE3_TEXT);
+        $del->execute();
     } else {
-        // Otherwise, add to favorites
-        $insertQuery = $db->prepare("INSERT INTO favorites (user_id, drink_key) VALUES (:user_id, :drink_key)");
-        $insertQuery->bindValue(":user_id", $user_id, SQLITE3_INTEGER);
-        $insertQuery->bindValue(":drink_key", $drink_key, SQLITE3_TEXT);
-        $insertQuery->execute();
+        // Not liked yet → insert
+        $ins = $db->prepare("INSERT INTO favorites (user_id, drink_key) VALUES (:uid, :dkey)");
+        $ins->bindValue(":uid", $user_id, SQLITE3_INTEGER);
+        $ins->bindValue(":dkey", $drink_key, SQLITE3_TEXT);
+        $ins->execute();
     }
 }
 
-// Redirect back to profile
 header("Location: profile.php");
 exit;
