@@ -19,12 +19,16 @@
     border-radius: 5px;
     backdrop-filter: blur(3px);
 }
-input{
+.input{
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #363636;
     border-radius: 5px;
+}
+input{
+    padding: 10px;
+    margin: 10px 0;
 }
 .btn{
     width: 100%;
@@ -47,7 +51,7 @@ h1{
 }
 .table-container {
     margin: 0 10px;
-    max-height: 800px;
+    max-height: 90vh;
     overflow-y: auto;
     width: 85%;
     border: 2px solid black;
@@ -77,18 +81,20 @@ button {
 }
 .sidebar{
     width: 15%;
-    height: 100vh;
+    height: 90vh;
     padding: 20px;
     backdrop-filter: blur(3px);
     border: 2px solid #363636;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 a{
     text-decoration: none;
     color: black;
 }
-.sidebar a{
+.sidebar .logout{
     padding: 10px;
     margin: 5px 0;
     border: 1px solid #363636;
@@ -96,7 +102,7 @@ a{
     text-align: center;
     background-color: #f2f2f2;
 }
-.sidebar a:hover{
+.sidebar .logout:hover{
     background-color: #af280b;
     transition: background-color 0.3s ease;
 }

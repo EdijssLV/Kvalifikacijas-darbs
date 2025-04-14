@@ -26,8 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="formLapa" background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
     <form method="post" class="form">
         <h1>Pieslēgties</h1>
-        E-pasts: <input type="email" name="email" required><br>
-        Parole: <input type="password" name="password" required><br>
+        E-pasts: <input type="email" name="email" class="input" required><br>
+        Parole: <input type="password" name="password" class="input" required><br>
         <button type="submit" class="btn">Pieslēgties</button>
         <p>Jums nav konta? <a href="signup.php">Reģistrējieties šeit!</a>.</p>
     </form>
