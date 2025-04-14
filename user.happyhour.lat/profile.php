@@ -62,13 +62,13 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
 // Fetch all drinks
 $query = "SELECT * FROM Kabinets UNION SELECT *, NULL AS links FROM nemainigs ORDER BY Name";
 $results = $db->query($query);
+
 ?>
 <?php include 'head.php'; ?>
 <body background="http://st.depositphotos.com/1987851/1904/i/450/depositphotos_19041043-Old-wallpaper-seamless-texture.jpg">
     <h1>Kabinets</h1>
     <div id="style">
         <div class="sidebar">
-            <h3>Menu</h3>
             <h2>Sveiks, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h2>
             <div>
                 <h2>Filtrs</h2>
@@ -118,72 +118,71 @@ $results = $db->query($query);
             <a href="logout.php" class="logout">Izrakstīties</a>
         </div>
         <div class="table-container">
-        <table id="myTable">
-            <thead>
-                <tr>
-                    <th>Dzēriens</th>
-                    <th>Tilpums</th>
-                    <th>Cena</th>
-                    <th>Veikals</th>
-                    <th class="hidden-column">Kategorija</th>
-                    <th>Cena/L</th>
-                    <th>Izmaiņas</th>
-                    <th>Darbība</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $results->fetchArray(SQLITE3_ASSOC)): ?>
-                    <?php
-                        $drink_key = generateDrinkKey($row['Name'], $row['Volume'], $row['Store']);
-
-                        // Get price change from history
-                        $change_query = $db->prepare("
-                            SELECT change 
-                            FROM price_history 
-                            WHERE drink_key = :drink_key AND change IS NOT NULL 
-                            ORDER BY recorded_at DESC 
-                            LIMIT 1
-                        ");
-                        $change_query->bindValue(":drink_key", $drink_key, SQLITE3_TEXT);
-                        $change_result = $change_query->execute();
-
-                        $change_value = '';
-                        if ($change_row = $change_result->fetchArray(SQLITE3_ASSOC)) {
-                            $diff = $change_row['change'];
-                            if ($diff > 0) {
-                                $change_value = '<span style="color:red;">+' . number_format($diff, 2) . ' €</span>';
-                            } elseif ($diff < 0) {
-                                $change_value = '<span style="color:green;">' . number_format($diff, 2) . ' €</span>';
-                            } else {
-                                $change_value = '<span>0.00 €</span>';
-                            }
-                        }
-
-                        // Check if drink is favorited
-                        $is_favorited = isset($fav_drinks[$drink_key]);
-                    ?>
+            <table id="myTable">
+                <thead>
                     <tr>
-                        <td><a href="<?php echo $row['links']; ?>" target="_blank"><?php echo htmlspecialchars($row['Name']); ?></a></td>
-                        <td><?php echo $row['Volume']; ?> L</td>
-                        <td><?php echo $row['Price']; ?> €</td>
-                        <td><?php echo $row['Store']; ?></td>
-                        <td class="hidden-column"><?php echo $row['Category']; ?></td>
-                        <td><?php echo $row['PricePerLiter']; ?> €/L</td>
-                        <td><?php echo $change_value; ?></td>
-                        <td>
-                            <form method='post' action='favorite.php'>
-                                <input type='hidden' name='drink_key' value='<?php echo $drink_key; ?>'>
-                                <button type='submit' style='background:none; border:none; cursor:pointer;'>
-                                    <i class="fa <?php echo $is_favorited ? 'fa-thumbs-up' : 'fa-thumbs-o-up'; ?>" style="font-size:24px"></i>
-                                </button>
-                            </form>
-                        </td>
+                        <th>Dzēriens</th>
+                        <th>Tilpums</th>
+                        <th>Cena</th>
+                        <th>Veikals</th>
+                        <th class="hidden-column">Kategorija</th>
+                        <th>Cena/L</th>
+                        <th>Izmaiņas</th>
+                        <th>Darbība</th>
                     </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php while ($row = $results->fetchArray(SQLITE3_ASSOC)): ?>
+                        <?php
+                            $drink_key = generateDrinkKey($row['Name'], $row['Volume'], $row['Store']);
+
+                            // Get price change from history
+                            $change_query = $db->prepare("
+                                SELECT change 
+                                FROM price_history 
+                                WHERE drink_key = :drink_key AND change IS NOT NULL 
+                                ORDER BY recorded_at DESC 
+                                LIMIT 1
+                            ");
+                            $change_query->bindValue(":drink_key", $drink_key, SQLITE3_TEXT);
+                            $change_result = $change_query->execute();
+
+                            $change_value = '';
+                            if ($change_row = $change_result->fetchArray(SQLITE3_ASSOC)) {
+                                $diff = $change_row['change'];
+                                if ($diff > 0) {
+                                    $change_value = '<span style="color:red;">+' . number_format($diff, 2) . ' €</span>';
+                                } elseif ($diff < 0) {
+                                    $change_value = '<span style="color:green;">' . number_format($diff, 2) . ' €</span>';
+                                } else {
+                                    $change_value = '<span>0.00 €</span>';
+                                }
+                            }
+
+                            // Check if drink is favorited
+                            $is_favorited = isset($fav_drinks[$drink_key]);
+                        ?>
+                        <tr>
+                            <td><a href="<?php echo $row['links']; ?>" target="_blank"><?php echo htmlspecialchars($row['Name']); ?></a></td>
+                            <td><?php echo $row['Volume']; ?> L</td>
+                            <td><?php echo $row['Price']; ?> €</td>
+                            <td><?php echo $row['Store']; ?></td>
+                            <td class="hidden-column"><?php echo $row['Category']; ?></td>
+                            <td><?php echo $row['PricePerLiter']; ?> €/L</td>
+                            <td><?php echo $change_value; ?></td>
+                            <td>
+                                <form method='post' action='favorite.php'>
+                                    <input type='hidden' name='drink_key' value='<?php echo $drink_key; ?>'>
+                                    <button type='submit' style='background:none; border:none; cursor:pointer;'>
+                                        <i class="fa <?php echo $is_favorited ? 'fa-thumbs-up' : 'fa-thumbs-o-up'; ?>" style="font-size:24px"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
         </div>
     </div>
-    <script src="scripts.js"></script>
 </body>
 </html>

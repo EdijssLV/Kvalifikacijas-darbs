@@ -24,4 +24,6 @@
     <meta name="twitter:image" content="URL to an image representing your page" />
 
     <meta name="description" content="Meklē lētus dzērienus" />
+
+    <script src="scripts.js" defer></script>
 </head>
