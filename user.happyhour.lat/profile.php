@@ -25,16 +25,6 @@ function generateDrinkKey($name, $volume, $store) {
     return hash("sha256", strtolower(trim($name)) . $volume . $store);
 }
 
-// Fetch user's favorite drinks
-$fav_query = $db->prepare("SELECT drink_key FROM favorites WHERE user_id = :user_id");
-$fav_query->bindValue(":user_id", $user_id, SQLITE3_INTEGER);
-$fav_results = $fav_query->execute();
-
-$fav_drinks = [];
-while ($fav_row = $fav_results->fetchArray(SQLITE3_ASSOC)) {
-    $fav_drinks[$fav_row['drink_key']] = true;
-}
-
 function generateCheckboxes($db, $table, $column, $inputName) {
     $html = '';
     try {
@@ -45,7 +35,7 @@ function generateCheckboxes($db, $table, $column, $inputName) {
             ORDER BY $column ASC
         ";
         $results = $db->query($query);
-        
+
         while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
             $value = htmlspecialchars($row[$column], ENT_QUOTES, 'UTF-8');
             $html .= "<label><input type=\"checkbox\" name=\"$inputName\" value=\"$value\"> $value</label><br>\n";
@@ -62,6 +52,15 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
 // Fetch all drinks
 $query = "SELECT * FROM Kabinets UNION SELECT *, NULL AS links FROM nemainigs ORDER BY Name";
 $results = $db->query($query);
+
+// Get user's favorites
+$fav_drinks = [];
+$fav_query = $db->prepare("SELECT drink_key FROM favorites WHERE user_id = :uid");
+$fav_query->bindValue(":uid", $user_id, SQLITE3_INTEGER);
+$fav_result = $fav_query->execute();
+while ($fav_row = $fav_result->fetchArray(SQLITE3_ASSOC)) {
+    $fav_drinks[$fav_row["drink_key"]] = true;
+}
 
 ?>
 <?php include 'head.php'; ?>
@@ -111,10 +110,12 @@ $results = $db->query($query);
                             <?php echo $storesHTML; ?>
                         </div>
                     </div>
-                    <p style="font-size: 12px;">* - Veikali kuriem netiek atjaunoti dati</p>
-                    <button onclick="window.open('https://happyhour.lat/data.php', '_blank')">Statistiku lapa</button>
                 </div>
             </div>
+            <p style="font-size: 12px;">* - Veikali kuriem netiek atjaunoti dati</p>
+            <button onclick="window.open('https://happyhour.lat/data.php', '_blank')">Statistiku lapa</button>
+            <button onclick="toggleNonZeroChanges()">Cenu izmaiņas</button>
+            <button onclick="toggleFavorites()">Tikai iemīļotie</button>
             <a href="logout.php" class="logout">Izrakstīties</a>
         </div>
         <div class="table-container">
@@ -158,27 +159,26 @@ $results = $db->query($query);
                                     $change_value = '<span>0.00 €</span>';
                                 }
                             }
-
-                            // Check if drink is favorited
-                            $is_favorited = isset($fav_drinks[$drink_key]);
+                        // Check if drink is favorited
+                        $is_favorited = isset($fav_drinks[$drink_key]);
                         ?>
-                        <tr>
-                            <td><a href="<?php echo $row['links']; ?>" target="_blank"><?php echo htmlspecialchars($row['Name']); ?></a></td>
-                            <td><?php echo $row['Volume']; ?> L</td>
-                            <td><?php echo $row['Price']; ?> €</td>
-                            <td><?php echo $row['Store']; ?></td>
-                            <td class="hidden-column"><?php echo $row['Category']; ?></td>
-                            <td><?php echo $row['PricePerLiter']; ?> €/L</td>
-                            <td><?php echo $change_value; ?></td>
-                            <td>
-                                <form method='post' action='favorite.php'>
-                                    <input type='hidden' name='drink_key' value='<?php echo $drink_key; ?>'>
-                                    <button type='submit' style='background:none; border:none; cursor:pointer;'>
-                                        <i class="fa <?php echo $is_favorited ? 'fa-thumbs-up' : 'fa-thumbs-o-up'; ?>" style="font-size:24px"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td><a href="<?php echo $row['links']; ?>" target="_blank"><?php echo htmlspecialchars($row['Name']); ?></a></td>
+                        <td><?php echo $row['Volume']; ?> L</td>
+                        <td><?php echo $row['Price']; ?> €</td>
+                        <td><?php echo $row['Store']; ?></td>
+                        <td class="hidden-column"><?php echo $row['Category']; ?></td>
+                        <td><?php echo $row['PricePerLiter']; ?> €/L</td>
+                        <td><?php echo $change_value; ?></td>
+                        <td>
+                            <form method='post' action='favorite.php'>
+                                <input type='hidden' name='drink_key' value='<?php echo $drink_key; ?>'>
+                                <button type='submit' style='background:none; border:none; cursor:pointer;'>
+                                    <i class="fa <?php echo $is_favorited ? 'fa-thumbs-up' : 'fa-thumbs-o-up'; ?>" style="font-size:24px"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>

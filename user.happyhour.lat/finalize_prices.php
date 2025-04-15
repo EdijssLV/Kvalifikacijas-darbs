@@ -31,7 +31,7 @@ while ($row = $drinkKeys->fetchArray(SQLITE3_ASSOC)) {
         $newest = $priceData[0];
         $previous = $priceData[1];
 
-        $change = round($newest['price'] - $previous['price'], 2);
+        $change = $newest['price'] - $previous['price'];
         $recorded_at = $newest['recorded_at'];
 
         $stmt = $db->prepare("

@@ -66,4 +66,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Expose toggleFilters to global scope
     window.toggleFilters = toggleFilters;
+
+    let showingOnlyChanges = false;
+
+    function toggleNonZeroChanges() {
+        const rows = document.querySelectorAll("#myTable tbody tr");
+    
+        showingOnlyChanges = !showingOnlyChanges;
+    
+        rows.forEach(row => {
+            const changeCell = row.children[6]; // 7th column = Izmaiņas
+    
+            if (!changeCell) return;
+    
+            const text = changeCell.textContent.trim();
+            const numeric = parseFloat(text.replace(/[^\d\.\-]/g, ''));
+    
+            if (showingOnlyChanges) {
+                if (isNaN(numeric) || numeric === 0) {
+                    row.style.display = "none";
+                } else {
+                    row.style.display = "";
+                }
+            } else {
+                row.style.display = "";
+            }
+        });
+    }
+    window.toggleNonZeroChanges = toggleNonZeroChanges;
+
+    let showingOnlyFavorites = false;
+
+    function toggleFavorites() {
+        console.log("Toggling favorites...");
+
+        const rows = document.querySelectorAll("#myTable tbody tr");
+        showingOnlyFavorites = !showingOnlyFavorites;
+
+        rows.forEach(row => {
+            const icon = row.querySelector("i.fa");
+            if (!icon) return;
+
+            const isFavorited = icon.classList.contains("fa-thumbs-up");
+
+            if (showingOnlyFavorites) {
+                row.style.display = isFavorited ? "" : "none";
+            } else {
+                row.style.display = "";
+            }
+        });
+    }
+
+    window.toggleFavorites = toggleFavorites;
 });
