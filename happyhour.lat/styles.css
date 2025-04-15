@@ -8,7 +8,7 @@ h1{
     font-size: 40px;
 }
 .table-container {
-    max-height: 700px;
+    height: 100%;
     overflow-y: auto;
     width: 60%;
     border: 2px solid black;
@@ -56,10 +56,9 @@ button {
     width: 14.8%;
     background-color: #fff;
     position: fixed;
-    height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 660px;
+    height: 57vh;
     border: 2px solid black;
 }
 a {
@@ -75,7 +74,7 @@ img{
 #style{
     display: grid;
     place-items: center;
-    height: 700px;
+    height: 90vh;
     padding-bottom: 20px;
 }
 .container, .area {
