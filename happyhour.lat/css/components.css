@@ -1,0 +1,100 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+th, td {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    padding: 15px 5px;
+}
+
+.hidden-column {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+.top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.top-right-button {
+    background-color: white;
+    border: 1px solid #111;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.hidden-div {
+    display: none;
+    margin: 0px;
+    padding: 20px;
+    width: 14.8%;
+    background-color: #fff;
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 57vh;
+    border: 2px solid black;
+}
+
+.button-area {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+.btn-group {
+    display: contents;
+}
+
+.btn-group button {
+    padding: 15px 32px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #51cda0;
+    color: white;
+    transition: background-color 0.3s ease;
+    width: 150px;
+    text-align: center;
+}
+
+.btn-group button:hover {
+    background-color: #45a049;
+}
+
+.checkbox-area {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 3px;
+}
+
+.checkbox-area label {
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #df7970;
+    color: white;
+    width: 150px;
+    text-align: center;
+}

@@ -33,7 +33,7 @@ $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
     <h1>Kabinets</h1>
     <div class = "top-right">
         <button class="top-right-button"  onclick="toggleDiv()"><span class="material-icons md-48">tune</span></button>
-        <button class="top-right-button" ><a class="top-right-button" href="https://user.happyhour.lat" target='_blank'><span class="material-icons md-48">person</span></a></button>
+        <button class="top-right-button" ><a href="https://user.happyhour.lat" target='_blank'><span class="material-icons md-48">person</span></a></button>
     </div>
     <div id="myDiv" class="hidden-div">
         <h2>Filtrs</h2>

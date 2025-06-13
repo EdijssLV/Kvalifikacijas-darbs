@@ -1,0 +1,36 @@
+#style {
+    display: grid;
+    place-items: center;
+    height: 85vh;
+    padding-bottom: 20px;
+}
+
+.container, .area {
+    height: 100%;
+    width: 100%;
+}
+
+.area {
+    display: flex;
+    flex-direction: row;
+}
+
+.action-area, .chart-area {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin: 3px;
+}
+
+#barChartContainer, #lineChartContainer {
+    height: 100%;
+    width: 100%;
+}
+
+.table-container {
+    height: 100%;
+    overflow-y: auto;
+    width: 60%;
+    border: 2px solid black;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}

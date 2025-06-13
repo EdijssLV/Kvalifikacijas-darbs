@@ -24,11 +24,13 @@ function toggleFilters(id, arrowId) {
 }
 
 function filterFirstColumn() {
+    // Get the input value
     const input = document.getElementById("filterInput");
     const filter = input.value.toUpperCase();
     const table = document.getElementById("myTable");
     const rows = table.getElementsByTagName("tr");
-    
+
+    // Loop through all table rows (except the header)
     for (let i = 1; i < rows.length; i++) {
         const firstCell = rows[i].getElementsByTagName("td")[0]; // First column
         if (firstCell) {
