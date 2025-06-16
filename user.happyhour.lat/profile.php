@@ -10,7 +10,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     exit;
 }
 
-$_SESSION['LAST_ACTIVITY'] = time(); // Refresh activity timestamp
+$_SESSION['LAST_ACTIVITY'] = time();
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: index.php");
@@ -20,7 +20,6 @@ if (!isset($_SESSION["user_id"])) {
 $user_id = $_SESSION["user_id"];
 $db = new SQLite3('/var/www/mysite/database/kabinets.db');
 
-// Function to generate a unique drink key
 function generateDrinkKey($name, $volume, $store) {
     return hash("sha256", strtolower(trim($name)) . $volume . $store);
 }
@@ -49,11 +48,10 @@ function generateCheckboxes($db, $table, $column, $inputName) {
 $categoriesHTML = generateCheckboxes($db, 'Kabinets', 'Category', 'stiprieDzerieni');
 
 $storesHTML = generateCheckboxes($db, 'Kabinets', 'Store', 'veikals');
-// Fetch all drinks
+
 $query = "SELECT * FROM Kabinets UNION SELECT *, NULL AS links FROM nemainigs ORDER BY Name";
 $results = $db->query($query);
 
-// Get user's favorites
 $fav_drinks = [];
 $fav_query = $db->prepare("SELECT drink_key FROM favorites WHERE user_id = :uid");
 $fav_query->bindValue(":uid", $user_id, SQLITE3_INTEGER);
@@ -137,7 +135,6 @@ while ($fav_row = $fav_result->fetchArray(SQLITE3_ASSOC)) {
                         <?php
                             $drink_key = generateDrinkKey($row['Name'], $row['Volume'], $row['Store']);
 
-                            // Get price change from history
                             $change_query = $db->prepare("
                                 SELECT change 
                                 FROM price_history 
@@ -159,7 +156,6 @@ while ($fav_row = $fav_result->fetchArray(SQLITE3_ASSOC)) {
                                     $change_value = '<span>0.00 €</span>';
                                 }
                             }
-                        // Check if drink is favorited
                         $is_favorited = isset($fav_drinks[$drink_key]);
                         ?>
                     <tr>

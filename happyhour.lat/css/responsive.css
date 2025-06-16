@@ -1,4 +1,3 @@
-
 @media screen and (max-width: 770px) {
     .table-container {
         width: 100%;
@@ -23,5 +22,46 @@
         z-index: 9;
         width: 40%;
         height: 400px;
+    }
+    
+    .button-area{
+        gap: 3px;
+    }
+    .btn-group button, .checkbox-area label{
+        width: 110px;
+    }
+}
+@media screen and (max-width: 400px) {
+    .table-container {
+        width: 100%;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    .hidden-div {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        z-index: 9;
+        width: 40%;
+        height: 400px;
+    }
+    
+    .button-area{
+        gap: 1px;
+    }
+    .btn-group button, .checkbox-area label{
+        padding: 5px 5px;
+        width: 130px;
     }
 }

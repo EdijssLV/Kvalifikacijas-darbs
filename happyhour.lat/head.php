@@ -4,9 +4,8 @@
     <title>Kabinets</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/statistic.css">
     <link rel="stylesheet" href="css/responsive.css">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

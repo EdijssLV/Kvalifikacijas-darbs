@@ -84,12 +84,6 @@ button {
     background-color: #f2f2f2;
     color: black;
 }
-
-button:hover {
-    background-color: #25a0ed;
-    transition: ease-in 0.1s;
-}
-
 .sidebar{
     width: 15%;
     height: 90vh;
@@ -120,6 +114,20 @@ a{
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+.error{
+    background-color: #ff4242;
+    padding: 10px;
+    margin: 10px 0;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #bb3535;
+    border-radius: 5px
+    
+}
+.error ul {
+    list-style: none;
+}
 @media screen and (max-width: 770px){
     .table-container{
         width:100%;
@@ -131,5 +139,8 @@ tr:nth-child(even) {
     }
     table{
         font-size: 14px;
+    }
+    .sidebar{
+        width: 50%
     }
 }

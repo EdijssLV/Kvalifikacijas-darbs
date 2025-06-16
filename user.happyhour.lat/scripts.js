@@ -6,14 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (section.style.display === "none") {
             section.style.display = "block";
-            arrow.textContent = "expand_more"; // Change arrow
+            arrow.textContent = "expand_more";
         } else {
             section.style.display = "none";
-            arrow.textContent = "expand_less"; // Change arrow
+            arrow.textContent = "expand_less";
         }
     }
 
-    // Function to filter the table based on selected checkboxes
     function filterTable() {
         let table = document.getElementById("myTable");
         let rows = table.getElementsByTagName("tr");
@@ -45,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
         for (let i = 0; i < rows.length; i++) {
-            let firstCell = rows[i].getElementsByTagName("td")[0]; // First column (Dzēriens)
+            let firstCell = rows[i].getElementsByTagName("td")[0];
             if (firstCell) {
                 let textValue = firstCell.textContent || firstCell.innerText;
                 rows[i].style.display = textValue.toLowerCase().includes(input) ? "" : "none";
@@ -53,18 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    // Helper function to get checked values from a given section
     function getCheckedValues(sectionName) {
         let checkboxes = document.querySelectorAll(`input[name="${sectionName}"]:checked`);
         return Array.from(checkboxes).map(cb => cb.value);
     }
 
-    // Add event listeners for all checkboxes
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener("change", filterTable);
     });
 
-    // Expose toggleFilters to global scope
     window.toggleFilters = toggleFilters;
 
     let showingOnlyChanges = false;
@@ -75,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showingOnlyChanges = !showingOnlyChanges;
     
         rows.forEach(row => {
-            const changeCell = row.children[6]; // 7th column = Izmaiņas
+            const changeCell = row.children[6];
     
             if (!changeCell) return;
     
